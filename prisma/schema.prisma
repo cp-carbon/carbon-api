@@ -1,6 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// File: schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,15 +13,54 @@ datasource db {
 }
 
 model Users {
-  id String @id
-  email String @unique
-  fullname String
-  password String
-  transport_reference Json?
+  id       String @id @db.VarChar(50)
+  email    String @unique @db.VarChar(50)
+  fullname String @db.VarChar(50)
+  password String @db.VarChar(255)
+  transports UserTransportsPreference[]
+  foodLogs  FoodLogs[]
+  travelLogs TravelLogs[]
 }
 
 model Transports {
-  id Int @id @default(autoincrement())
-  brand_name String
-  model String
+  id         String                    @id @db.VarChar(50)
+  brand_name String                    @db.VarChar(50)
+  model      String                    @db.VarChar(50)
+  users      UserTransportsPreference[]
+}
+
+model UserTransportsPreference {
+  id           String    @id @db.VarChar(50)
+  user_id      String    @db.VarChar(50)
+  transport_id String    @db.VarChar(50)
+  user         Users     @relation(fields: [user_id], references: [id])
+  transport    Transports @relation(fields: [transport_id], references: [id])
+}
+
+model FoodLogs {
+  id       String   @id @db.VarChar(50)
+  user_id  String   @db.VarChar(50)
+  item     String   @db.VarChar(50)
+  emission Int      @db.Int
+  datetime DateTime
+  user     Users    @relation(fields: [user_id], references: [id])
+}
+
+model TravelLogs {
+  id         String   @id @db.VarChar(50)
+  user_id    String   @db.VarChar(50)
+  distance   Int      @db.Int
+  type       Type
+  emission   Int      @db.Int
+  from       DateTime
+  to         DateTime
+  created_at DateTime
+  user       Users    @relation(fields: [user_id], references: [id])
+}
+
+enum Type {
+  walk
+  bike
+  vehicle
+  public_transport
 }
