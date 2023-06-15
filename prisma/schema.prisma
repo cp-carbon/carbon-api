@@ -17,16 +17,18 @@ model Users {
   email    String @unique @db.VarChar(50)
   fullname String @db.VarChar(50)
   password String @db.VarChar(255)
-  transports UserTransportsPreference[]
-  foodLogs  FoodLogs[]
-  travelLogs TravelLogs[]
+  transport_preferences Json?
+  user_transports_preferences UserTransportsPreference[]
+  food_logs  FoodLogs[]
+  travel_logs TravelLogs[]
 }
 
 model Transports {
   id         String                    @id @db.VarChar(50)
   brand_name String                    @db.VarChar(50)
   model      String                    @db.VarChar(50)
-  users      UserTransportsPreference[]
+  class      String                    @db.VarChar(50)
+  user_transports_preference UserTransportsPreference[]
 }
 
 model UserTransportsPreference {

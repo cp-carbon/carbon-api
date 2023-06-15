@@ -24,6 +24,7 @@ const signup = async (req, res) => {
             return;
         }
 
+
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
@@ -40,6 +41,7 @@ const signup = async (req, res) => {
             });
             transportIds.push(uuid);
         }
+
 
         //buat user
         const newUser = await prisma.users.create({
@@ -90,11 +92,10 @@ const signup = async (req, res) => {
             token: token,
         });
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             code: 500,
             status: "error",
-            message: "Internal Server Error",
+            message: "Internal Server Error," + error,
             data: null,
         });
     }
@@ -155,10 +156,6 @@ const signin = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        const token = req.headers["token"];
-        const decoded = jwt.verify(token, "secretkey");
-        const id = decoded.id;
-        const t = jwt.sign({ id: id }, "secretkey", { expiresIn: "1s" });
         res.status(200).json({
             message: "Logout Berhasil",
             success: true,

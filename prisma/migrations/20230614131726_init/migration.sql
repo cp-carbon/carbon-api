@@ -4,6 +4,7 @@ CREATE TABLE `Users` (
     `email` VARCHAR(50) NOT NULL,
     `fullname` VARCHAR(50) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
+    `transport_preferences` JSON NULL,
 
     UNIQUE INDEX `Users_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -14,6 +15,7 @@ CREATE TABLE `Transports` (
     `id` VARCHAR(50) NOT NULL,
     `brand_name` VARCHAR(50) NOT NULL,
     `model` VARCHAR(50) NOT NULL,
+    `class` VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
